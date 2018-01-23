@@ -1,4 +1,4 @@
-package com.rhyno.misedirty.pollution;
+package com.rhyno.misedirty.model;
 
 import lombok.*;
 
