@@ -1,4 +1,4 @@
-package com.rhyno.misedirty.apis.model;
+package com.rhyno.misedirty.apis;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,8 +1,7 @@
 package com.rhyno.misedirty.apis;
 
 import com.google.gson.Gson;
-import com.rhyno.misedirty.apis.model.AirPollution;
-import com.rhyno.misedirty.apis.model.OpenApi;
+import com.rhyno.misedirty.apis.model.AirPollutionResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,12 @@ import java.net.URISyntaxException;
 import java.util.Optional;
 
 @Service
+@Deprecated
 public class AirPollutionApi {
+    /**
+     *  공공API는 xml기본으로 response 리턴한다 returnType=jsond하면 response가 text/plain으로 리턴된다
+     *
+     */
     private static final Logger logger = LoggerFactory.getLogger(AirPollutionApi.class);
 
     private RestTemplate restTemplate;
@@ -28,7 +32,7 @@ public class AirPollutionApi {
         this.openApi = openApi;
     }
 
-    public AirPollution getPollution(String station) {
+    public AirPollutionResponse getPollution(String station) {
         return Optional.ofNullable(getPollutionUrl(station))
                 .map(pollutionUrl -> {
                     ResponseEntity<String> response = restTemplate.getForEntity(pollutionUrl,
@@ -42,7 +46,7 @@ public class AirPollutionApi {
                 })
                 .map(strAirPollution -> {
                     Gson gson = new Gson();
-                    return gson.fromJson(strAirPollution, AirPollution.class);
+                    return gson.fromJson(strAirPollution, AirPollutionResponse.class);
                 })
                 .orElse(null);
     }

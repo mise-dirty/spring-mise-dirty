@@ -1,12 +1,14 @@
 package com.rhyno.misedirty.apis.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Builder
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@XmlRootElement(name = "item")
 public class Air {
     private Integer coGrade;
     private Double coValue;

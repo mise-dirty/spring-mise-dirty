@@ -1,7 +1,7 @@
 package com.rhyno.misedirty.controller;
 
-import com.rhyno.misedirty.apis.model.AirPollution;
 import com.rhyno.misedirty.apis.AirPollutionApi;
+import com.rhyno.misedirty.apis.model.AirPollutionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,7 @@ public class AirPollutionController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(consumes = "application/json", produces = "application/json")
-    public AirPollution getPollution(@RequestParam("station") String station) {
+    public AirPollutionResponse getPollution(@RequestParam("station") String station) {
         return airPollutionApi.getPollution(station);
     }
 }

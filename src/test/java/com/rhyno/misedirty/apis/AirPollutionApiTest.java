@@ -1,6 +1,6 @@
 package com.rhyno.misedirty.apis;
 
-import com.rhyno.misedirty.apis.model.AirPollution;
+import com.rhyno.misedirty.apis.model.AirPollutionResponse;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ public class AirPollutionApiTest {
     @Ignore
     @Test
     public void whenAirPollutionApiGetPollution_thenReturnAirPollution() throws Exception {
-        AirPollution airPollution = airPollutionApi.getPollution("성북구");
+        AirPollutionResponse airPollution = airPollutionApi.getPollution("성북구");
 
         assertThat(airPollution).isNotNull();
     }
