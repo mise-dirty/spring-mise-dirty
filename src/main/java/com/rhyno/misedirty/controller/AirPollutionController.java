@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.UnsupportedEncodingException;
+
 @RestController
 @RequestMapping(value = "/api/v1/pollution", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AirPollutionController {
@@ -20,7 +22,7 @@ public class AirPollutionController {
     }
 
     @GetMapping
-    public AirPollution getPollution(@RequestParam("station") String station) {
+    public AirPollution getPollution(@RequestParam("station") String station) throws UnsupportedEncodingException {
         return airPollutionApi.getPollution(station);
     }
 }

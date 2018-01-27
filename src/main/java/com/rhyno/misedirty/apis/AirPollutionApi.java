@@ -10,6 +10,8 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,12 +44,12 @@ public class AirPollutionApi {
         this.airPollutionClient = airPollutionClient;
     }
 
-    public AirPollution getPollution(String station) {
+    public AirPollution getPollution(String station) throws UnsupportedEncodingException {
         AirPollutionResponse airPollutionResponse = airPollutionClient.getPollution(station,
                 this.dataTerm,
                 this.pageNo,
                 this.numOfRows,
-                this.serviceKey,
+                URLDecoder.decode(this.getServiceKey(), "UTF-8"),
                 this.version);
 
         final Optional<AirPollution> airPollution = Optional.ofNullable(airPollutionResponse)
