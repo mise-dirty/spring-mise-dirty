@@ -1,26 +1,26 @@
 package com.rhyno.misedirty.controller;
 
 import com.rhyno.misedirty.apis.AirPollutionApi;
-import com.rhyno.misedirty.apis.model.AirPollutionResponse;
+    import com.rhyno.misedirty.model.AirPollution;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController(value = "/api/v1/pollution")
+@RestController
+@RequestMapping(value = "/api/v1/pollution", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AirPollutionController {
-    private AirPollutionApi airPollutionApi;
+    private final AirPollutionApi airPollutionApi;
 
     @Autowired
     public AirPollutionController(AirPollutionApi airPollutionApi) {
         this.airPollutionApi = airPollutionApi;
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping(consumes = "application/json", produces = "application/json")
-    public AirPollutionResponse getPollution(@RequestParam("station") String station) {
+    @GetMapping
+    public AirPollution getPollution(@RequestParam("station") String station) {
         return airPollutionApi.getPollution(station);
     }
 }

@@ -12,6 +12,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Setter
 @XmlRootElement(name = "header")
 public class ResponseHeader {
-    private String resultCode;
+    private Status resultCode;
     private String resultMsg;
 }

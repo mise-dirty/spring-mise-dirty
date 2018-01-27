@@ -1,6 +1,7 @@
 package com.rhyno.misedirty.apis;
 
 import com.rhyno.misedirty.apis.model.AirPollutionResponse;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,30 +23,32 @@ public class AirPollutionClientTest {
     private String serviceKey;
 
     @Autowired
-    private OpenApi openApi;
+    private AirPollutionApi airPollutionApi;
 
+    @Ignore
     @Test
     public void whenPmClientGetPollutions_thenReturnPollutions() throws Exception {
         AirPollutionResponse result = airPollutionClient.getPollution(
                 "성북구",
-                openApi.getDataTerm(),
-                openApi.getPageNo(),
-                openApi.getNumOfRows(),
-                URLDecoder.decode(openApi.getServiceKey(), "UTF-8"),
-                openApi.getVersion());
+                airPollutionApi.getDataTerm(),
+                airPollutionApi.getPageNo(),
+                airPollutionApi.getNumOfRows(),
+                URLDecoder.decode(airPollutionApi.getServiceKey(), "UTF-8"),
+                airPollutionApi.getVersion());
 
         assertThat(result.getHeader().getResultCode()).isEqualTo("00");
         assertThat(result.getHeader().getResultMsg()).isEqualTo("NORMAL SERVICE.");
     }
 
+    @Ignore
     @Test
     public void whenGetPollutionsWithWrongServiceKey_thenReturnServiceKeyIsNotRegisteredError() throws Exception {
         AirPollutionResponse error = airPollutionClient.getPollution("성북구",
-                openApi.getDataTerm(),
-                openApi.getPageNo(),
-                openApi.getNumOfRows(),
+                airPollutionApi.getDataTerm(),
+                airPollutionApi.getPageNo(),
+                airPollutionApi.getNumOfRows(),
                 "not registered service key",
-                openApi.getVersion());
+                airPollutionApi.getVersion());
 
         assertThat(error.getHeader().getResultCode()).isEqualTo("30");
         assertThat(error.getHeader().getResultMsg()).isEqualTo("SERVICE KEY IS NOT REGISTERED ERROR.");

@@ -1,69 +1,90 @@
 package com.rhyno.misedirty.apis;
 
-import com.google.gson.Gson;
 import com.rhyno.misedirty.apis.model.AirPollutionResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import com.rhyno.misedirty.apis.model.Status;
+import com.rhyno.misedirty.exception.NotFoundException;
+import com.rhyno.misedirty.model.AirPollution;
+import com.rhyno.misedirty.model.Matter;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-@Service
-@Deprecated
+@Component
+@Getter
+@Setter
 public class AirPollutionApi {
-    /**
-     *  공공API는 xml기본으로 response 리턴한다 returnType=jsond하면 response가 text/plain으로 리턴된다
-     *
-     */
-    private static final Logger logger = LoggerFactory.getLogger(AirPollutionApi.class);
+    private final String baseUrl;
+    private final String serviceKey;
+    private final Double version;
+    private final String dataTerm;
+    private final Integer pageNo;
+    private final Integer numOfRows;
+    private final AirPollutionClient airPollutionClient;
 
-    private RestTemplate restTemplate;
-
-    private OpenApi openApi;
-
-    @Autowired
-    public AirPollutionApi(RestTemplate restTemplate, OpenApi openApi) {
-        this.restTemplate = restTemplate;
-        this.openApi = openApi;
+    public AirPollutionApi(@Value("${application.openApi.baseUrl}") String baseUrl,
+                           @Value("${application.openApi.serviceKey}") String serviceKey,
+                           @Value("${application.openApi.version}") Double version,
+                           @Value("${application.openApi.dataTerm}") String dataTerm,
+                           @Value("${application.openApi.pageNo}") Integer pageNo,
+                           @Value("${application.openApi.numOfRows}") Integer numOfRows,
+                           AirPollutionClient airPollutionClient) {
+        this.baseUrl = baseUrl;
+        this.serviceKey = serviceKey;
+        this.version = version;
+        this.dataTerm = dataTerm;
+        this.pageNo = pageNo;
+        this.numOfRows = numOfRows;
+        this.airPollutionClient = airPollutionClient;
     }
 
-    public AirPollutionResponse getPollution(String station) {
-        return Optional.ofNullable(getPollutionUrl(station))
-                .map(pollutionUrl -> {
-                    ResponseEntity<String> response = restTemplate.getForEntity(pollutionUrl,
-                            String.class);
+    public AirPollution getPollution(String station) {
+        AirPollutionResponse airPollutionResponse = airPollutionClient.getPollution(station,
+                this.dataTerm,
+                this.pageNo,
+                this.numOfRows,
+                this.serviceKey,
+                this.version);
 
-                    logger.debug("[AirPollutionApi] response: statusCode={}, body={}",
-                            response.getStatusCode(),
-                            response.getBody().toString());
+        final Optional<AirPollution> airPollution = Optional.ofNullable(airPollutionResponse)
+                .map(res -> {
+                    if (!Status.SUCCESS.equals(res.getHeader().getResultCode()) ||
+                            res.getBody() == null || res.getBody().getAirs() == null ||
+                            res.getBody().getAirs().isEmpty()) {
+                        throw new NotFoundException("Air Pollution");
+                    }
+                    return getCurrentAirPollution(res);
+                });
 
-                    return response.getBody();
-                })
-                .map(strAirPollution -> {
-                    Gson gson = new Gson();
-                    return gson.fromJson(strAirPollution, AirPollutionResponse.class);
-                })
-                .orElse(null);
-    }
-
-    private URI getPollutionUrl(String station) {
-        String GET_POLLUTION_URL = openApi.getBaseUrl() + "/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?" +
-                "stationName=" + station +
-                "&dataTerm=" + openApi.getDataTerm() +
-                "&pageNo=" + openApi.getPageNo() +
-                "&numOfRows=" + openApi.getNumOfRows() +
-                "&ServiceKey=" + openApi.getServiceKey() +
-                "&ver=" + openApi.getVersion() +
-                "&_returnType=" + openApi.getContentType();
-        try {
-            return new URI(GET_POLLUTION_URL);
-        } catch (URISyntaxException e) {
-            return null;
+        if (!airPollution.isPresent()) {
+            throw new NotFoundException("Air Pollution");
         }
+
+        return airPollution.get();
+    }
+
+    private AirPollution getCurrentAirPollution(AirPollutionResponse res) {
+        final List<AirPollution> airPollutions = res.getBody().getAirs().stream()
+                .map(air -> AirPollution.builder()
+                        .pm10(Matter.builder()
+                                .value(air.getPm10Value())
+                                .predicatedValueAfter24H(air.getPm10Value24())
+                                .build())
+                        .pm25(Matter.builder()
+                                .value(air.getPm25Value())
+                                .predicatedValueAfter24H(air.getPm25Value24())
+                                .build())
+                        .co(Matter.builder().value(air.getCoValue()).build())
+                        .so2(Matter.builder().value(air.getSo2Value()).build())
+                        .no2(Matter.builder().value(air.getNo2Value()).build())
+                        .o3(Matter.builder().value(air.getO3Value()).build())
+                        .measuringTimestamp(air.getDataTime())
+                        .build())
+                .collect(Collectors.toList());
+        return airPollutions.get(0);
     }
 }

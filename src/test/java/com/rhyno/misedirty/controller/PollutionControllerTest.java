@@ -1,8 +1,8 @@
 //package com.rhyno.misedirty.controller;
 //
 //import com.rhyno.misedirty.apis.AirPollutionApi;
-//import com.rhyno.misedirty.model.ParticularMatter;
-//import com.rhyno.misedirty.model.Pollution;
+//import com.rhyno.misedirty.model.Matter;
+//import com.rhyno.misedirty.model.AirPollution;
 //import org.assertj.core.util.Lists;
 //import org.junit.Before;
 //import org.junit.Test;
@@ -37,18 +37,18 @@
 //
 //    @MockBean
 //    private AirPollutionApi mockAirPollutionApi;
-//    private Pollution firstPollution;
-//    private Pollution secondPollution;
+//    private AirPollution firstPollution;
+//    private AirPollution secondPollution;
 //
 //    @Before
 //    public void setUp() throws Exception {
-//        firstPollution = Pollution.builder()
-//                .pm10(ParticularMatter.builder().value(25).predicated(30).build())
-//                .pm25(ParticularMatter.builder().value(10).predicated(15).build())
+//        firstPollution = AirPollution.builder()
+//                .pm10(Matter.builder().value(25).predicated(30).build())
+//                .pm25(Matter.builder().value(10).predicated(15).build())
 //                .build();
-//        secondPollution = Pollution.builder()
-//                .pm10(ParticularMatter.builder().value(25).predicated(30).build())
-//                .pm25(ParticularMatter.builder().value(10).predicated(15).build())
+//        secondPollution = AirPollution.builder()
+//                .pm10(Matter.builder().value(25).predicated(30).build())
+//                .pm25(Matter.builder().value(10).predicated(15).build())
 //                .build();
 //    }
 //
@@ -64,16 +64,16 @@
 //        when(mockAirPollutionApi.getPollution(eq("성북구")))
 //                .thenReturn(Lists.newArrayList(firstPollution, secondPollution));
 //
-//        ResponseEntity<List<Pollution>> response = restTemplate.exchange(
+//        ResponseEntity<List<AirPollution>> response = restTemplate.exchange(
 //                POLLUTION_BASE_URL + "?station=성북구&period=DAILY",
 //                HttpMethod.GET,
 //                null,
-//                new ParameterizedTypeReference<List<Pollution>>() {
+//                new ParameterizedTypeReference<List<AirPollution>>() {
 //                });
 //
 //        HttpStatus statusCode = response.getStatusCode();
 //        assertThat(statusCode).isEqualTo(HttpStatus.OK);
-//        List<Pollution> pollutions = response.getBody();
+//        List<AirPollution> pollutions = response.getBody();
 //        assertThat(pollutions).containsExactly(firstPollution, secondPollution);
 //    }
 //}
