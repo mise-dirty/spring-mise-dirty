@@ -1,4 +1,4 @@
-package com.rhyno.misedirty.apis.model;
+package com.rhyno.misedirty.api.model;
 
 import lombok.*;
 

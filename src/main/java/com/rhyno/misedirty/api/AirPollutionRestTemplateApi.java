@@ -1,7 +1,7 @@
-package com.rhyno.misedirty.apis;
+package com.rhyno.misedirty.api;
 
 import com.google.gson.Gson;
-import com.rhyno.misedirty.apis.model.AirPollutionResponse;
+import com.rhyno.misedirty.api.model.AirPollutionResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

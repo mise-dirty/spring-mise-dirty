@@ -1,6 +1,6 @@
 package com.rhyno.misedirty.controller;
 
-import com.rhyno.misedirty.apis.AirPollutionApi;
+import com.rhyno.misedirty.api.AirPollutionApi;
     import com.rhyno.misedirty.model.AirPollution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

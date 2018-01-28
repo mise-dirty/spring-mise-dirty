@@ -6,12 +6,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Criteria {
-    private Range level1;
-    private Range level2;
-    private Range level3;
-    private Range level4;
-    private Range level5;
-    private Range level6;
-    private Range level7;
-    private Range level8;
+    private Grade level1;
+    private Grade level2;
+    private Grade level3;
+    private Grade level4;
+    private Grade level5;
+    private Grade level6;
+    private Grade level7;
+    private Grade level8;
 }

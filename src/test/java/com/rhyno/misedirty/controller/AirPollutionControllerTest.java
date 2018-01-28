@@ -1,6 +1,6 @@
 package com.rhyno.misedirty.controller;
 
-import com.rhyno.misedirty.apis.AirPollutionApi;
+import com.rhyno.misedirty.api.AirPollutionApi;
 import com.rhyno.misedirty.model.AirPollution;
 import org.junit.Test;
 import org.junit.runner.RunWith;

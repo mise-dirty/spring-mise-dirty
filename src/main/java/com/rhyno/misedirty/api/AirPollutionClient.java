@@ -1,6 +1,6 @@
-package com.rhyno.misedirty.apis;
+package com.rhyno.misedirty.api;
 
-import com.rhyno.misedirty.apis.model.AirPollutionResponse;
+import com.rhyno.misedirty.api.model.AirPollutionResponse;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

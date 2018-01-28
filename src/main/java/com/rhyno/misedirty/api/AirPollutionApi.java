@@ -1,14 +1,14 @@
-package com.rhyno.misedirty.apis;
+package com.rhyno.misedirty.api;
 
-import com.rhyno.misedirty.apis.model.AirPollutionResponse;
-import com.rhyno.misedirty.apis.model.Status;
+import com.rhyno.misedirty.api.model.AirPollutionResponse;
+import com.rhyno.misedirty.api.model.Status;
 import com.rhyno.misedirty.exception.NotFoundException;
 import com.rhyno.misedirty.model.AirPollution;
 import com.rhyno.misedirty.model.Matter;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 @Getter
 @Setter
 public class AirPollutionApi {

@@ -1,6 +1,6 @@
-package com.rhyno.misedirty.apis;
+package com.rhyno.misedirty.api;
 
-import com.rhyno.misedirty.apis.model.*;
+import com.rhyno.misedirty.api.model.*;
 import com.rhyno.misedirty.exception.NotFoundException;
 import com.rhyno.misedirty.model.AirPollution;
 import com.rhyno.misedirty.model.Matter;
