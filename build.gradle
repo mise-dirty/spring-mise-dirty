@@ -33,7 +33,10 @@ repositories {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web:2.0.0.M2')
-    compile 'org.springframework.data:spring-data-mongodb'
+	compile('org.springframework.boot:spring-boot-starter-webflux:2.0.0.M7')
+    compile('org.springframework.data:spring-data-mongodb')
+    compile('org.mongodb:mongodb-driver-reactivestreams')
+
 	compile('org.springframework.cloud:spring-cloud-starter-feign:2.0.0.M2')
 
 	//for xml message converter

@@ -1,9 +1,9 @@
 spring:
     application:
         name: misedirty-service
-    data:
-        mongodb:
-            uri: mongodb://localhost:27017/misedirty
+#    data:
+#        mongodb:
+#            uri: mongodb://localhost:27017/misedirty
 
 application:
     openApi:

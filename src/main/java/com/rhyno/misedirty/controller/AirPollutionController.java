@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
 
@@ -25,7 +26,7 @@ public class AirPollutionController {
     }
 
     @GetMapping
-    public AirPollution getPollution(@RequestParam("station") String station) throws UnsupportedEncodingException {
+    public Mono<AirPollution> getPollution(@RequestParam("station") String station) throws UnsupportedEncodingException {
         final AirPollution pollution = airPollutionApi.getPollution(station);
         return airPollutionRepository.save(pollution);
     }
