@@ -14,4 +14,5 @@ public class AirPollution {
     private Matter o3;
     private Matter no2;
     private String measuringTimestamp;
+    private Integer totalGrade;
 }

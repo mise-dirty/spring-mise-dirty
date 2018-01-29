@@ -14,9 +14,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Getter
@@ -76,52 +78,34 @@ public class AirPollutionApi {
 
     private AirPollution getCurrentAirPollution(AirPollutionResponse res) {
         final List<AirPollution> airPollutions = res.getBody().getAirs().stream()
-                .map(air -> AirPollution.builder()
-                        .pm10(Matter.builder()
-                                .value(air.getPm10Value())
-                                .predicatedValueAfter24H(air.getPm10Value24())
-                                .grade(GradeManager.judge(
-                                        gradeProperties.getPm10(),
-                                        air.getPm10Value()))
-                                .build())
-                        .pm25(Matter.builder()
-                                .value(air.getPm25Value())
-                                .predicatedValueAfter24H(air.getPm25Value24())
-                                .grade(GradeManager.judge(
-                                        gradeProperties.getPm25(),
-                                        air.getPm25Value()
-                                ))
-                                .build())
-                        .co(Matter.builder()
-                                .value(air.getCoValue())
-                                .grade(GradeManager.judge(
-                                        gradeProperties.getCo(),
-                                        air.getCoValue()
-                                ))
-                                .build())
-                        .so2(Matter.builder()
-                                .value(air.getSo2Value())
-                                .grade(GradeManager.judge(
-                                        gradeProperties.getSo2(),
-                                        air.getSo2Value()
-                                ))
-                                .build())
-                        .no2(Matter.builder()
-                                .value(air.getNo2Value())
-                                .grade(GradeManager.judge(
-                                        gradeProperties.getNo2(),
-                                        air.getNo2Value()
-                                ))
-                                .build())
-                        .o3(Matter.builder()
-                                .value(air.getO3Value())
-                                .grade(GradeManager.judge(
-                                        gradeProperties.getO3(),
-                                        air.getO3Value()
-                                ))
-                                .build())
-                        .measuringTimestamp(air.getDataTime())
-                        .build())
+                .map(air -> {
+                    final Matter pm10 = Matter.builder().value(air.getPm10Value())
+                            .predicatedValueAfter24H(air.getPm10Value24())
+                            .grade(GradeManager.judge(gradeProperties.getPm10(), air.getPm10Value())).build();
+                    final Matter pm25 = Matter.builder().value(air.getPm25Value())
+                            .predicatedValueAfter24H(air.getPm25Value24())
+                            .grade(GradeManager.judge(gradeProperties.getPm25(), air.getPm25Value())).build();
+                    final Matter co = Matter.builder().value(air.getCoValue())
+                            .grade(GradeManager.judge(gradeProperties.getCo(), air.getCoValue())).build();
+                    final Matter so2 = Matter.builder().value(air.getSo2Value())
+                            .grade(GradeManager.judge(gradeProperties.getSo2(), air.getSo2Value())).build();
+                    final Matter no2 = Matter.builder().value(air.getNo2Value())
+                            .grade(GradeManager.judge(gradeProperties.getNo2(), air.getNo2Value())).build();
+                    final Matter o3 = Matter.builder().value(air.getO3Value())
+                            .grade(GradeManager.judge(gradeProperties.getO3(), air.getO3Value())).build();
+
+                    final Integer totalGrade = Stream.of(pm10.getGrade(), pm25.getGrade(), co.getGrade(), so2.getGrade(),
+                            no2.getGrade(), o3.getGrade())
+                            .sorted(Comparator.reverseOrder())
+                            .findFirst()
+                            .orElse(0);
+
+                    return AirPollution.builder()
+                            .pm10(pm10).pm25(pm25).co(co).so2(so2)
+                            .no2(no2).o3(o3)
+                            .totalGrade(totalGrade)
+                            .measuringTimestamp(air.getDataTime()).build();
+                })
                 .collect(Collectors.toList());
         return airPollutions.get(0);
     }

@@ -95,6 +95,8 @@ public class AirPollutionApiTest {
                 .value(0.5)
                 .grade(8)
                 .build());
+
+        assertThat(airPollution.getTotalGrade()).isEqualTo(8);
         assertThat(airPollution.getMeasuringTimestamp()).isEqualTo("2016-04-20 14:00");
     }
 
