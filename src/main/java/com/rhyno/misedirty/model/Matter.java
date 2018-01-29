@@ -7,4 +7,5 @@ import lombok.*;
 public class Matter {
     private Double value;
     private Double predicatedValueAfter24H;
+    private Integer grade;
 }
