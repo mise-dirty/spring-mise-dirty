@@ -13,7 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.when;
 
@@ -32,11 +32,11 @@ public class AirPollutionApiTest {
     public void whenGetPollution_returnAirPollution() throws Exception {
         //given
         when(mockAirPollutionClient.getPollution(eq(ANY_STATION),
-                eq("any data term"),
-                eq(0),
-                eq(10),
-                eq("any service key"),
-                eq(0.3)))
+                anyString(),
+                anyInt(),
+                anyInt(),
+                anyString(),
+                anyDouble()))
                 .thenReturn(AirPollutionResponse.builder()
                         .header(ResponseHeader.builder()
                                 .resultCode(Status.SUCCESS)
@@ -63,11 +63,11 @@ public class AirPollutionApiTest {
 
         //then
         then(mockAirPollutionClient).should().getPollution(eq("any station"),
-                eq("any data term"),
-                eq(0),
-                eq(10),
-                eq("any service key"),
-                eq(0.3));
+                anyString(),
+                anyInt(),
+                anyInt(),
+                anyString(),
+                anyDouble());
 
         assertThat(airPollution.getPm10()).isEqualTo(Matter.builder()
                 .value(0.3)
