@@ -1,0 +1,10 @@
+# docker run command : $docker-compose up -d
+version: '3'
+services:
+  mongodb:
+      image: "mongo:3.4"
+      ports:
+        - "27017:27017"
+      labels:
+        NAME: "mongo"
+
